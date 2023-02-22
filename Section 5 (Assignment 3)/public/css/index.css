@@ -1,0 +1,27 @@
+body,
+html {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  background-color: antiquewhite;
+  height: 100%;
+  width: 100%;
+}
+.title-text {
+  text-align: center;
+  color: royalblue;
+  font-size: 32px;
+  font-weight: 500;
+  padding: 32px;
+  margin: 0;
+}
+
+.link {
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+}
