@@ -1,0 +1,29 @@
+<%- include('includes/head.ejs') %>
+<title>Users</title>
+  </head>
+  <body>
+    <main style="padding: 30px">
+      <a style="text-align: center" href="/"
+        ><h1>Add a new user --></h1></a
+      >
+      <% if (users.length) { %>
+      <ul
+        style="
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          justify-content: center;
+          align-items: center;
+        "
+      >
+        <%- users.map((name) => (`
+        <li style="list-style: square; font-size: 24px; font-weight: bold">
+          ${name}
+        </li>
+        `)).join("") %>
+      </ul>
+      <% } else { %>
+      <h2 style="text-align: center">No users has been added yet!</h2>
+      <% } %>
+    </main>
+<%- include('includes/end.ejs') %>
