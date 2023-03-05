@@ -28,19 +28,25 @@ app.use((req, res, next) => {
     .catch((err) => console.log(err));
 });
 
-scheduleJob("*/5****", async () => {
-  // With creating real different users mapping trough them is needed;
+// Deleting deleted from a shop products from all carts of all users:
+scheduleJob("*/45 * * * * *" /* every 45 seconds */, async () => {
   const db = getDB();
   const users = await db.collection("users").find().toArray();
   const products = await db.collection("products").find().toArray();
 
   users.forEach((user) => {
     const currentUser = new User(user.name, user.email, user.cart, user._id);
+
     if (!currentUser.cart.items.length) return;
     else {
-      currentUser.cart.forEach((cartItem) => {
-        if (!products.includes(cartItem))
-          currentUser.deleteCartItem(cartItem._id);
+      currentUser.cart.items.forEach((cartItem) => {
+        const productId = cartItem.productId.toString();
+        const productDoesntExistAnymore = !products.find(
+          (iteratedProduct) => iteratedProduct._id.toString() === productId
+        );
+
+        if (productDoesntExistAnymore)
+          currentUser.deleteItemFromCart(productId);
       });
     }
   });

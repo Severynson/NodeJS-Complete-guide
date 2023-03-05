@@ -81,6 +81,7 @@ class User {
   }
 
   async deleteItemFromCart(productId) {
+    console.log(this.cart.items[0].productId, productId)
     try {
       const updatedCartItems = this.cart.items.filter(
         (item) => item.productId.toString() !== productId.toString()
@@ -88,7 +89,7 @@ class User {
 
       const db = getDB();
       const usersCollection = db.collection("users");
-      const result = usersCollection.updateOne(
+      const result = await usersCollection.updateOne(
         { _id: new ObjectId(this._id) },
         { $set: { cart: { items: updatedCartItems } } }
       );
