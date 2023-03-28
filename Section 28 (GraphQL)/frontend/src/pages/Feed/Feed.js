@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import openSocket from 'socket.io-client';
+// import openSocket from 'socket.io-client';
 
 import Post from '../../components/Feed/Post/Post';
 import Button from '../../components/Button/Button';
@@ -40,16 +40,16 @@ class Feed extends Component {
       .catch(this.catchError);
 
     this.loadPosts();
-    const socket = openSocket('http://localhost:8080');
-    socket.on('posts', data => {
-      if (data.action === 'create') {
-        this.addPost(data.post);
-      } else if (data.action === 'update') {
-        this.updatePost(data.post);
-      } else if (data.action === 'delete') {
-        this.loadPosts();
-      }
-    });
+    // const socket = openSocket('http://localhost:8080');
+    // socket.on('posts', data => {
+    //   if (data.action === 'create') {
+    //     this.addPost(data.post);
+    //   } else if (data.action === 'update') {
+    //     this.updatePost(data.post);
+    //   } else if (data.action === 'delete') {
+    //     this.loadPosts();
+    //   }
+    // });
   }
 
   addPost = post => {
@@ -68,57 +68,57 @@ class Feed extends Component {
     });
   };
 
-  updatePost = post => {
-    this.setState(prevState => {
-      const updatedPosts = [...prevState.posts];
-      const updatedPostIndex = updatedPosts.findIndex(p => p._id === post._id);
-      if (updatedPostIndex > -1) {
-        updatedPosts[updatedPostIndex] = post;
-      }
-      return {
-        posts: updatedPosts
-      };
-    });
-  };
+  // updatePost = post => {
+  //   this.setState(prevState => {
+  //     const updatedPosts = [...prevState.posts];
+  //     const updatedPostIndex = updatedPosts.findIndex(p => p._id === post._id);
+  //     if (updatedPostIndex > -1) {
+  //       updatedPosts[updatedPostIndex] = post;
+  //     }
+  //     return {
+  //       posts: updatedPosts
+  //     };
+  //   });
+  // };
 
-  loadPosts = direction => {
-    if (direction) {
-      this.setState({ postsLoading: true, posts: [] });
-    }
-    let page = this.state.postPage;
-    if (direction === 'next') {
-      page++;
-      this.setState({ postPage: page });
-    }
-    if (direction === 'previous') {
-      page--;
-      this.setState({ postPage: page });
-    }
-    fetch('http://localhost:8080/feed/posts?page=' + page, {
-      headers: {
-        Authorization: 'Bearer ' + this.props.token
-      }
-    })
-      .then(res => {
-        if (res.status !== 200) {
-          throw new Error('Failed to fetch posts.');
-        }
-        return res.json();
-      })
-      .then(resData => {
-        this.setState({
-          posts: resData.posts.map(post => {
-            return {
-              ...post,
-              imagePath: post.imageUrl
-            };
-          }),
-          totalPosts: resData.totalItems,
-          postsLoading: false
-        });
-      })
-      .catch(this.catchError);
-  };
+  // loadPosts = direction => {
+  //   if (direction) {
+  //     this.setState({ postsLoading: true, posts: [] });
+  //   }
+  //   let page = this.state.postPage;
+  //   if (direction === 'next') {
+  //     page++;
+  //     this.setState({ postPage: page });
+  //   }
+  //   if (direction === 'previous') {
+  //     page--;
+  //     this.setState({ postPage: page });
+  //   }
+  //   fetch('http://localhost:8080/feed/posts?page=' + page, {
+  //     headers: {
+  //       Authorization: 'Bearer ' + this.props.token
+  //     }
+  //   })
+  //     .then(res => {
+  //       if (res.status !== 200) {
+  //         throw new Error('Failed to fetch posts.');
+  //       }
+  //       return res.json();
+  //     })
+  //     .then(resData => {
+  //       this.setState({
+  //         posts: resData.posts.map(post => {
+  //           return {
+  //             ...post,
+  //             imagePath: post.imageUrl
+  //           };
+  //         }),
+  //         totalPosts: resData.totalItems,
+  //         postsLoading: false
+  //       });
+  //     })
+  //     .catch(this.catchError);
+  // };
 
   statusUpdateHandler = event => {
     event.preventDefault();
